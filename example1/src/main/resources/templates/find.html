@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div id="ctx" class="container">
+		<div class="form-horizontal">
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">客户编号:</label>
+		    <div class="col-sm-4">
+		      <input class="form-control" id="inputEmail3" v-model="client.id">
+		    </div>
+		    <label for="inputEmail3" class="col-sm-2 control-label">客户名称:</label>
+		    <div class="col-sm-4">
+		      <input class="form-control" id="inputEmail3" v-model="client.name">
+		    </div>
+		  </div>
+		   <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">联系人:</label>
+		    <div class="col-sm-4">
+		      <input class="form-control" id="inputEmail3" v-model="client.person">
+		    </div>
+		    <label for="inputEmail3" class="col-sm-2 control-label">创建日期:</label>
+		    <div class="col-sm-4">
+		      <input class="form-control" type="date" id="inputEmail3" v-model="client.date">
+		    </div>
+		   
+		  </div>
+		   <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">联系电话:</label>
+		    <div class="col-sm-4">
+		      <input class="form-control" id="inputEmail3" v-model="client.phone">
+		    </div>
+		     <label for="inputEmail3" class="col-sm-2 control-label">送货地址:</label>
+		    <div class="col-sm-2">
+		      <input class="form-control" id="inputEmail3 " v-model="client.address.id">
+		       
+		    </div>
+		    <div class="col-sm-2">
+		    	<input class="form-control" id="inputEmail3 " v-model="client.address.address">
+		   	</div>
+		  </div>
+		   <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">负责人:</label>
+		    <div class="col-sm-4">
+		      <input class="form-control" id="inputEmail3" v-model="client.director">
+		    </div>
+		     <label for="inputEmail3" class="col-sm-2 control-label">税务登记号:</label>
+		    <div class="col-sm-4">
+		      <input class="form-control" id="inputEmail3" v-model="client.tax">
+		    </div>
+		  </div>
+		</div>
+		<div>
+			<div class="col-sm-6">
+				
+			</div>
+			<div class="col-sm-6"> 
+				<button type="button" class="btn btn-info" @click="toFindById">查询</button>
+				<button type="button" class="btn btn-info" @click="create">保存</button>
+			</div>
+		</div>
+		</div>
+		
+	<script type="text/javascript" th:src="@{/js/jquery-1.12.4.js}"></script>
+	<script type="text/javascript" th:src="@{/js/vue.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript">
+		var vm=new Vue({
+			el:"#ctx",
+			data(){
+				return {
+					client:{
+						address:{}
+					}
+				}
+			},
+			methods:{
+				toFindById(){
+					var that=this;
+					$.ajax({
+						url:"[[@{/find}]]",
+						data:{
+							id:that.client.id
+						},
+						success:function(res){
+							if(res==""){
+								alert("请输入正确的客户id!");
+							}else{
+								that.client=res;
+							}	
+						}
+					});
+				},
+				create(){
+					var that=this;
+					var str=JSON.stringify(this.client);
+					$.ajax({
+						url:"[[@{/create}]]",
+						data:str,
+						type:"post",
+						contentType:"application/json;charset=utf-8",
+						success:function(res){
+							if(res=="0000"){
+								alert("新增成功!");
+							}else if(res=="0001"){
+								alert("修改成功!");
+							}
+						}
+						
+					});
+				}	
+			},
+		});
+	</script>
+</body>
+</html>
